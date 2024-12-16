@@ -66,7 +66,7 @@ router.post("/getAll", async (req:any, res:any) => {
 // Connect two users
 router.post('/connect', async (req:any, res:any) => {
     const { userId, connectId } = req.body;
-  
+    console.log(req.body)
     // Ensure both userId and connectId are provided
     if (!userId || !connectId) {
       return res.status(400).json({ message: 'userId and connectId are required' });
@@ -87,12 +87,14 @@ router.post('/connect', async (req:any, res:any) => {
 
 
       if (!connector || !connector.userConnection || !connector?.userConnection?.includes(userId)) {
+        const profile = await Profile.find({userId})
         // Create a new notification for the connected user
         const newNotification = new Notification({
             userId: connectId,
-            message: `${userId} has requested to connect with you.`,
+            message: `${profile[0].name} has requested to connect with you.`,
             viewed: false,
-            connectId:userId
+            connectId:userId,
+            tag:'Accept'
         });
         // Save the new notification
         await newNotification.save();
@@ -127,9 +129,10 @@ router.post("/getconnections", async (req: any, res: any) => {
       const connections = await Connection.findOne({ userId });
   
       if (!connections || !connections.userConnection || connections.userConnection.length === 0) {
-        return res.status(404).json({
+        return res.status(200).json({
           success: false,
           message: "No connections found for this userId",
+          data:[]
         });
       }
   

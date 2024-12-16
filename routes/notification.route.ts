@@ -24,7 +24,7 @@ router.post('/accept', async (req:any, res:any) => {
       const notification = await Notification.findById(notificationId);
   
       if (!notification) {
-        return res.status(404).json({ error: 'Notification not found' });
+        return res.status(200).json({ error: 'Notification not found' });
       }
   
       // Logic for accepting the notification (e.g., mark it as accepted, update statuses, etc.)
@@ -72,4 +72,15 @@ router.post('/decline', async (req:any, res:any) => {
     }
   });
 
+router.post('/send', async (req:any, res:any) => {
+  const { userId, connectId, message, viewed, tag } = req.body;
+  try {
+    const newNotification = new Notification({ userId, connectId, message, viewed, tag });
+    await newNotification.save();
+
+    res.status(201).json({ message: 'Notification sent', newNotification });
+  } catch (err:any) {
+    res.status(500).json({ error: err.message });
+  }
+})
 export default router;

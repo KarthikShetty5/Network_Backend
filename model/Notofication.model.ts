@@ -7,6 +7,7 @@ export interface INotification extends Document {
   message: string;     // Notification message
   viewed: boolean;     // Whether the notification has been viewed
   timestamp: Date;     // Timestamp of the notification
+  tag?: string;        // Optional tag for categorizing notifications
 }
 
 // Define the Mongoose schema for Notification
@@ -15,6 +16,7 @@ const NotificationSchema: Schema = new mongoose.Schema({
   connectId: { type: String, required: true },
   message: { type: String, required: true },
   viewed: { type: Boolean, required: true },
+  tag: { type: String, required: false },
   timestamp: { type: Date, default: Date.now },
 });
 

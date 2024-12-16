@@ -42,7 +42,7 @@ router.post('/recent', async (req:any, res:any) => {
     const connections = await Connection.find({ userId: userId });
 
     if (!connections.length) {
-      return res.status(404).json({ message: 'No connections found' });
+      return res.status(200).json({ message: 'No connections found' ,recentMessages:[]});
     }
 
     // Step 2: Fetch the most recent message for each connection
