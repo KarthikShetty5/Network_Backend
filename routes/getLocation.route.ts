@@ -40,8 +40,10 @@ router.post("/getAll", async (req:any, res:any) => {
           };
   
           const distance = geolib.getPreciseDistance(currentPosition, userLocation);
-  
-          console.log(`Distance to ${user.name}: ${distance} meters`); // Debugging
+
+          if(distance<=2){
+            console.log(`Distance to ${user.name}: ${distance} meters`); // Debugging
+          }
   
           return distance <= 20; // Users within 2 meters
         }
@@ -66,7 +68,6 @@ router.post("/getAll", async (req:any, res:any) => {
 // Connect two users
 router.post('/connect', async (req:any, res:any) => {
     const { userId, connectId } = req.body;
-    console.log(req.body)
     // Ensure both userId and connectId are provided
     if (!userId || !connectId) {
       return res.status(400).json({ message: 'userId and connectId are required' });
